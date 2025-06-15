@@ -7,7 +7,7 @@ body {
 
 #game-board {
   display: grid;
-  grid-template-columns: repeat(6, 60px);
+  grid-template-columns: repeat(8, 60px);
   gap: 10px;
   justify-content: center;
   margin: 20px auto;
