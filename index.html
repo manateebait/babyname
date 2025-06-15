@@ -199,7 +199,7 @@
         // Check against target word.
         const tiles = document.querySelectorAll(".tile");
       
-        for (let i = 0; i < wordLength; i++) {
+        for (let i = 0; i < currentGuess.length; i++) {
           const index = currentRow * maxWordLength + i;
           const tile = tiles[index];
           const letter = currentGuess[i];
@@ -228,16 +228,16 @@
           currentRow++;
           currentGuess = "";
       
-          // If the correct word length is 6, hide unused tiles in remaining rows
-          if (wordLength === 6) {
-            for (let r = currentRow; r < maxGuesses; r++) {
-              for (let c = 6; c < maxWordLength; c++) {
-                const index = r * maxWordLength + c;
-                const tile = tiles[index];
-                if (tile) tile.style.visibility = "hidden";
-              }
+               if (currentGuess.length === 6) {
+          for (let r = currentRow; r < maxGuesses; r++) {
+            for (let c = 6; c < maxWordLength; c++) {
+              const index = r * maxWordLength + c;
+              const tile = tiles[index];
+              if (tile) tile.style.visibility = "hidden";
             }
           }
+        }
+
       
           if (currentRow >= maxGuesses) {
             document.getElementById("lose-screen").classList.remove("hidden");
