@@ -42,8 +42,21 @@
     #alert { position: absolute; top: 10%; left: 50%; transform: translateX(-50%); background: #333; padding: 12px 24px; border-radius: 4px; font-size: 1.2em; display: none; z-index: 20; }
 
     @media (max-width: 600px) {
-      .tile { width: 50px; height: 50px; }
-      #game-board { grid-template-columns: repeat(8, 50px); gap: 6px; justify-content: center; max-width: 360px; margin: 0 auto; }
+      .tile {
+  width: 10vw;
+  height: 10vw;
+  max-width: 40px;
+  max-height: 40px;
+  font-size: 1.2em;
+}
+
+#game-board {
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+  max-width: 95vw;
+  margin: 0 auto;
+}
+
       #keyboard { max-width: 100%; padding: 0 4px; }
       .keyboard-row { width: 100%; display: flex; justify-content: center; gap: 3px; flex-wrap: nowrap; }
       .keyboard-row button { font-size: 20px; padding: 12px 0; min-width: auto; height: 48px; flex: 1; }
