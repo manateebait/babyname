@@ -85,7 +85,9 @@
   </div>
   <script src="js/win-message.js"></script>
   <script>
-    let wordLength = 6; // will update based on the selected target
+    const encodedTarget = [66, 65, 84, 77, 65, 78];
+    const targetWord = String.fromCharCode(...encodedTarget).toLowerCase();
+    let wordLength = targetWord.length;
     const maxWordLength = 8;
     const maxGuesses = 6;
     let currentRow = 0;
