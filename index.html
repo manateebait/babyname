@@ -93,6 +93,7 @@
     let currentRow = 0;
     let currentGuess = "";
     let allowedWords = [];
+    let lockToSixColumns = false;
 
     const board = document.getElementById("game-board");
     const keyboard = document.getElementById("keyboard");
@@ -147,17 +148,22 @@
       updateBoard();
     }
 
-      function updateBoard() {
-  const tiles = document.querySelectorAll(".tile");
-  for (let i = 0; i < maxWordLength; i++) {
-    const index = currentRow * maxWordLength + i;
-    const tile = tiles[index];
+    function updateBoard() {
+      const tiles = document.querySelectorAll(".tile");
+      for (let i = 0; i < maxWordLength; i++) {
+        const index = currentRow * maxWordLength + i;
+        const tile = tiles[index];
+    
+        tile.textContent = currentGuess[i] ? currentGuess[i].toUpperCase() : "";
+    
+        if (lockToSixColumns && i >= 6) {
+          tile.style.visibility = "hidden";
+        } else {
+          tile.style.visibility = "visible";
+        }
+      }
+    }
 
-    tile.textContent = currentGuess[i] ? currentGuess[i].toUpperCase() : "";
-
-    tile.style.visibility = "visible";
-  }
-}
 
 
 
@@ -231,6 +237,7 @@
         currentGuess = "";
         
         if (wasSixLetterGuess) {
+          lockToSixColumns = true;
           for (let r = currentRow; r < maxGuesses; r++) {
             for (let c = 6; c < maxWordLength; c++) {
               const index = r * maxWordLength + c;
