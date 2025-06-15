@@ -214,29 +214,50 @@
           return;
         }
       
-        // At this point, it's a valid word on the list.
-        // Check against target word.
         const tiles = document.querySelectorAll(".tile");
-      
-        for (let i = 0; i < currentGuess.length; i++) {
+        const targetLetters = targetWord.split('');
+        const guessLetters = currentGuess.split('');
+        const resultMarkers = Array(guessLetters.length).fill(null);
+        const usedIndices = new Set();
+        
+        // First pass: mark correct letters
+        for (let i = 0; i < guessLetters.length; i++) {
+          if (guessLetters[i] === targetLetters[i]) {
+            resultMarkers[i] = 'correct';
+            usedIndices.add(i);
+          }
+        }
+        
+        // Second pass: mark present letters
+        for (let i = 0; i < guessLetters.length; i++) {
+          if (resultMarkers[i]) continue;
+          const letter = guessLetters[i];
+        
+          for (let j = 0; j < targetLetters.length; j++) {
+            if (!usedIndices.has(j) && targetLetters[j] === letter) {
+              resultMarkers[i] = 'present';
+              usedIndices.add(j);
+              break;
+            }
+          }
+        
+          if (!resultMarkers[i]) {
+            resultMarkers[i] = 'absent';
+          }
+        }
+        
+        // Animate tiles and update keys
+        for (let i = 0; i < guessLetters.length; i++) {
           const index = currentRow * maxWordLength + i;
           const tile = tiles[index];
-          const letter = currentGuess[i];
+          const letter = guessLetters[i];
           setTimeout(() => {
             tile.classList.add("flip");
-            if (letter === targetWord[i]) {
-              tile.classList.add("correct");
-              updateKey(letter, "correct");
-            } else if (targetWord.includes(letter)) {
-              tile.classList.add("present");
-              updateKey(letter, "present");
-            } else {
-              tile.classList.add("absent");
-              updateKey(letter, "absent");
-            }
+            tile.classList.add(resultMarkers[i]);
+            updateKey(letter, resultMarkers[i]);
           }, i * 300);
         }
-      
+
         setTimeout(() => {
           if (currentGuess === targetWord) {
             document.getElementById("win-screen").innerHTML = `<h2>${WIN_MESSAGE}</h2>`;
