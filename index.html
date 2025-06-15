@@ -225,10 +225,12 @@
             return;
           }
       
-          currentRow++;
-          currentGuess = "";
-      
-               if (currentGuess.length === 6) {
+        const wasSixLetterGuess = currentGuess.length === 6;
+        
+        currentRow++;
+        currentGuess = "";
+        
+        if (wasSixLetterGuess) {
           for (let r = currentRow; r < maxGuesses; r++) {
             for (let c = 6; c < maxWordLength; c++) {
               const index = r * maxWordLength + c;
