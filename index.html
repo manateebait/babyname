@@ -151,7 +151,7 @@
     function updateBoard() {
       const tiles = document.querySelectorAll(".tile");
       for (let i = 0; i < wordLength; i++) {
-        const index = currentRow * wordLength + i;
+        const index = currentRow * maxWordLength + i;
         const tile = tiles[currentRow * maxWordLength + i];
         tile.textContent = currentGuess[i] ? currentGuess[i].toUpperCase() : "";
         tile.style.visibility = i < wordLength ? "visible" : "hidden";
@@ -175,6 +175,13 @@
     }
 
     function submitGuess() {
+
+      if (currentGuess.length < 6) {
+  shakeRow();
+  showAlert("Name too short");
+  return;
+}
+
   if (currentGuess.length !== wordLength) return;
 
   if (!allowedWords.includes(currentGuess)) {
@@ -214,12 +221,15 @@
     currentRow++;
     currentGuess = "";
 
-    // Hide unused tiles for future rows if word is shorter than max
-    const nextRowStart = currentRow * maxWordLength;
-    for (let i = wordLength; i < maxWordLength; i++) {
-      const tile = tiles[nextRowStart + i];
-      if (tile) tile.style.visibility = "hidden";
-    }
+
+  for (let r = currentRow; r < maxGuesses; r++) {
+  for (let c = wordLength; c < maxWordLength; c++) {
+    const index = r * maxWordLength + c;
+    const tile = tiles[index];
+    if (tile) tile.style.visibility = "hidden";
+  }
+}
+
 
     if (currentRow >= maxGuesses) {
       document.getElementById("lose-screen").classList.remove("hidden");
