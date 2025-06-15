@@ -149,14 +149,17 @@
     }
 
       function updateBoard() {
-      const tiles = document.querySelectorAll(".tile");
-      for (let i = 0; i < maxWordLength; i++) {
-        const index = currentRow * maxWordLength + i;
-        const tile = tiles[index];
-        tile.textContent = currentGuess[i] ? currentGuess[i].toUpperCase() : "";
-        tile.style.visibility = i < wordLength ? "visible" : "hidden";
-      }
-    }
+  const tiles = document.querySelectorAll(".tile");
+  for (let i = 0; i < maxWordLength; i++) {
+    const index = currentRow * maxWordLength + i;
+    const tile = tiles[index];
+
+    tile.textContent = currentGuess[i] ? currentGuess[i].toUpperCase() : "";
+
+    tile.style.visibility = "visible";
+  }
+}
+
 
 
     function showAlert(message) {
