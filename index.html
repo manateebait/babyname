@@ -176,68 +176,75 @@
       }
     }
 
-    function submitGuess() {
-
-      if (currentGuess.length < 6) {
-  shakeRow();
-  showAlert("Name too short");
-  return;
-}
-
-  if (currentGuess.length !== wordLength) return;
-
-  if (!allowedWords.includes(currentGuess)) {
-    shakeRow();
-    showAlert("Not a baby name");
-    return;
-  }
-
-  const tiles = document.querySelectorAll(".tile");
-
-  for (let i = 0; i < wordLength; i++) {
-    const index = currentRow * maxWordLength + i;
-    const tile = tiles[index];
-    const letter = currentGuess[i];
-    setTimeout(() => {
-      tile.classList.add("flip");
-      if (letter === targetWord[i]) {
-        tile.classList.add("correct");
-        updateKey(letter, "correct");
-      } else if (targetWord.includes(letter)) {
-        tile.classList.add("present");
-        updateKey(letter, "present");
-      } else {
-        tile.classList.add("absent");
-        updateKey(letter, "absent");
+          function submitGuess() {
+        if (currentGuess.length < 6) {
+          shakeRow();
+          showAlert("Name too short");
+          return;
+        }
+      
+        if (currentGuess.length > maxWordLength) {
+          shakeRow();
+          showAlert("Name too long");
+          return;
+        }
+      
+        if (!allowedWords.includes(currentGuess)) {
+          shakeRow();
+          showAlert("Not a baby name");
+          return;
+        }
+      
+        // At this point, it's a valid word on the list.
+        // Check against target word.
+        const tiles = document.querySelectorAll(".tile");
+      
+        for (let i = 0; i < wordLength; i++) {
+          const index = currentRow * maxWordLength + i;
+          const tile = tiles[index];
+          const letter = currentGuess[i];
+          setTimeout(() => {
+            tile.classList.add("flip");
+            if (letter === targetWord[i]) {
+              tile.classList.add("correct");
+              updateKey(letter, "correct");
+            } else if (targetWord.includes(letter)) {
+              tile.classList.add("present");
+              updateKey(letter, "present");
+            } else {
+              tile.classList.add("absent");
+              updateKey(letter, "absent");
+            }
+          }, i * 300);
+        }
+      
+        setTimeout(() => {
+          if (currentGuess === targetWord) {
+            document.getElementById("win-screen").innerHTML = `<h2>${WIN_MESSAGE}</h2>`;
+            document.getElementById("win-screen").classList.remove("hidden");
+            return;
+          }
+      
+          currentRow++;
+          currentGuess = "";
+      
+          // If the correct word length is 6, hide unused tiles in remaining rows
+          if (wordLength === 6) {
+            for (let r = currentRow; r < maxGuesses; r++) {
+              for (let c = 6; c < maxWordLength; c++) {
+                const index = r * maxWordLength + c;
+                const tile = tiles[index];
+                if (tile) tile.style.visibility = "hidden";
+              }
+            }
+          }
+      
+          if (currentRow >= maxGuesses) {
+            document.getElementById("lose-screen").classList.remove("hidden");
+          }
+        }, wordLength * 300);
       }
-    }, i * 300);
-  }
 
-  setTimeout(() => {
-    if (currentGuess === targetWord) {
-      document.getElementById("win-screen").innerHTML = `<h2>${WIN_MESSAGE}</h2>`;
-      document.getElementById("win-screen").classList.remove("hidden");
-      return;
-    }
-
-    currentRow++;
-    currentGuess = "";
-
-
-  for (let r = currentRow; r < maxGuesses; r++) {
-  for (let c = wordLength; c < maxWordLength; c++) {
-    const index = r * maxWordLength + c;
-    const tile = tiles[index];
-    if (tile) tile.style.visibility = "hidden";
-  }
-}
-
-
-    if (currentRow >= maxGuesses) {
-      document.getElementById("lose-screen").classList.remove("hidden");
-    }
-  }, wordLength * 300);
-}
 
 
     function updateKey(letter, status) {
