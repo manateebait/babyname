@@ -148,16 +148,16 @@
       updateBoard();
     }
 
-    function updateBoard() {
+      function updateBoard() {
       const tiles = document.querySelectorAll(".tile");
-      for (let i = 0; i < wordLength; i++) {
+      for (let i = 0; i < maxWordLength; i++) {
         const index = currentRow * maxWordLength + i;
-        const tile = tiles[currentRow * maxWordLength + i];
+        const tile = tiles[index];
         tile.textContent = currentGuess[i] ? currentGuess[i].toUpperCase() : "";
         tile.style.visibility = i < wordLength ? "visible" : "hidden";
-
       }
     }
+
 
     function showAlert(message) {
       alertBox.textContent = message;
